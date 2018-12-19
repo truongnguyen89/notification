@@ -4,15 +4,15 @@ import com.football.common.constant.Constant;
 import com.football.common.exception.CommonException;
 import com.football.common.message.MessageCommon;
 import com.football.common.model.device.Device;
+import com.football.common.model.email.Email;
 import com.football.common.model.notification.Notification;
 import com.football.common.model.notification.NotificationQueue;
+import com.football.common.model.user.User;
 import com.football.common.response.Response;
 import com.football.common.util.ArrayListCommon;
 import com.football.common.util.Resource;
-import com.football.notification.repository.DeviceRepository;
-import com.football.notification.repository.NotificationLogRepository;
-import com.football.notification.repository.NotificationQueueRepository;
-import com.football.notification.repository.NotificationRepository;
+import com.football.common.util.StringCommon;
+import com.football.notification.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +39,19 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     DeviceRepository deviceRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    EmailRepository emailRepository;
+
     @Override
     public Response createNotification(String title, String content, int type, long userId) {
+        //Validate user
+        User user = userRepository.findOne(userId);
+        if (user == null)
+            throw new CommonException(Response.NOT_FOUND, MessageCommon.getMessage(Resource.getMessageResoudrce(Constant.RESOURCE.KEY.NOT_FOUND), Constant.TABLE.USER));
+        //Luu thong tin noti
         Notification notification = new Notification();
         notification.setTitle(title);
         notification.setContents(content);
@@ -49,6 +60,7 @@ public class NotificationServiceImpl implements NotificationService {
         notification = notificationRepository.save(notification);
 
         List<Device> deviceList = deviceRepository.findByUserIdAndStatus(userId, Constant.DEVICE.STATUS.ONLINE);
+        //Neu co device online
         if (!ArrayListCommon.isNullOrEmpty(deviceList))
             for (Device device : deviceList
             ) {
@@ -58,8 +70,10 @@ public class NotificationServiceImpl implements NotificationService {
                 notificationQueue.setStatus(Constant.NOTIFICATION_QUEUE.STATUS.NEW);
                 notificationQueueRepository.save(notificationQueue);
             }
+            //Neu khong co device online
         else {
             Device device = deviceRepository.findFirstByUserId(userId);
+            //Da co device tung dang nhap nhung dang offline --> De noti dang cho doi, khi online se gui di
             if (device != null) {
                 NotificationQueue notificationQueue = new NotificationQueue();
                 notificationQueue.setNotificationId(notification.getId());
@@ -70,6 +84,10 @@ public class NotificationServiceImpl implements NotificationService {
                 throw new CommonException(Response.NOT_FOUND, MessageCommon.getMessage(Resource.getMessageResoudrce(Constant.RESOURCE.KEY.NOT_FOUND), Constant.TABLE.DEVICE));
             }
         }
+
+        //Send email neu user co dung email
+        if (!StringCommon.isNullOrBlank(user.getEmail()))
+            emailRepository.save(new Email(user.getEmail(), title, content));
         return Response.OK;
     }
 }
