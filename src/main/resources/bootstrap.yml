@@ -1,0 +1,31 @@
+server:
+    port: 9005
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka/
+management:
+    security:
+        enabled: false
+security:
+    basic:
+        enabled: false
+logging:
+    pattern:
+        console: "[%d{dd/MM/yyyy HH:mm:ss,SSS}] %m%n"
+        file: "[%d{dd/MM/yyyy HH:mm:ss,SSS}] %m%n"
+spring:
+    session:
+        store-type: none
+    profiles:
+        active: default
+    application:
+        name: notification
+    datasource:
+        url: "jdbc:mysql://localhost:3306/football?createDatabaseIfNotExist=true&useSSL=false&zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8"
+        username: root
+        password:
+        driver-class-name: com.mysql.jdbc.Driver
+demo:
+    bus: "AAAAAAAA"
