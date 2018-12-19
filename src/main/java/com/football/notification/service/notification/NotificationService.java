@@ -1,5 +1,7 @@
 package com.football.notification.service.notification;
 
+import com.football.common.model.notification.NotificationQueue;
+import com.football.common.response.Response;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,4 +13,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface NotificationService {
+    Response createNotification(String title, String content, int type, long userId);
 }

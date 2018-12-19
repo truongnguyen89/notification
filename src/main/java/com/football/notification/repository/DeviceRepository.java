@@ -16,4 +16,8 @@ import java.util.List;
 @Repository
 public interface DeviceRepository extends CrudRepository<Device, Long> {
     List<Device> findByStatus(int status);
+
+    List<Device> findByUserIdAndStatus(long userId, int status);
+
+    Device findFirstByUserId(long userId);
 }
