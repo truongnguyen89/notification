@@ -20,4 +20,10 @@ public interface DeviceRepository extends CrudRepository<Device, Long> {
     List<Device> findByUserIdAndStatus(long userId, int status);
 
     Device findFirstByUserId(long userId);
+
+    Device findFirstByUserIdAndOnesignalAppIdAndOnesignalDeviceId(long userId, String onesignalAppId, String onesignalDeviceId);
+
+    Iterable<Device> findFirstByUserIdAndStatusAndOnesignalDeviceIdIsNotIn(long userId, int status, String onesignalDeviceId);
+
+
 }

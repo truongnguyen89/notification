@@ -13,7 +13,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Service
-public interface DeivceService {
+public interface DeviceService {
     Device subscribe(Device device) throws Exception;
 
     Device update(long id, Device device) throws Exception;
