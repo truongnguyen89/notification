@@ -2,7 +2,7 @@ package com.football.notification.api;
 
 import com.football.common.constant.Constant;
 import com.football.common.exception.CommonException;
-import com.football.common.response.Response;
+import com.football.common.model.notification.NotificationQueue;
 import com.football.notification.service.notification.NotificationService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
@@ -42,7 +42,7 @@ public class NotificationController {
             @RequestParam(value = "userId", required = true, defaultValue = "1") long userId
     ) throws Exception {
         try {
-            return new ResponseEntity<Response>(notificationService.createNotification(title, content, type, userId), HttpStatus.CREATED);
+            return new ResponseEntity<NotificationQueue>(notificationService.createNotification(title, content, type, userId), HttpStatus.CREATED);
         } catch (CommonException e) {
             return new ResponseEntity<>(e.toString(), e.getResponse().getStatus());
         } catch (Exception e) {

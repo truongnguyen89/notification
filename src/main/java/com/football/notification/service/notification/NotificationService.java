@@ -13,5 +13,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface NotificationService {
-    Response createNotification(String title, String content, int type, long userId);
+    NotificationQueue createNotification(String title, String content, int type, long userId) throws Exception;
 }

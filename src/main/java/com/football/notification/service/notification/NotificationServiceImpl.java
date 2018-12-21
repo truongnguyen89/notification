@@ -46,7 +46,8 @@ public class NotificationServiceImpl implements NotificationService {
     EmailRepository emailRepository;
 
     @Override
-    public Response createNotification(String title, String content, int type, long userId) {
+    public NotificationQueue createNotification(String title, String content, int type, long userId) throws Exception{
+        NotificationQueue rs = new NotificationQueue();
         //Validate user
         User user = userRepository.findOne(userId);
         if (user == null)
@@ -68,7 +69,7 @@ public class NotificationServiceImpl implements NotificationService {
                 notificationQueue.setNotificationId(notification.getId());
                 notificationQueue.setDeviceId(device.getId());
                 notificationQueue.setStatus(Constant.NOTIFICATION_QUEUE.STATUS.NEW);
-                notificationQueueRepository.save(notificationQueue);
+                rs = notificationQueueRepository.save(notificationQueue);
             }
             //Neu khong co device online
         else {
@@ -79,7 +80,7 @@ public class NotificationServiceImpl implements NotificationService {
                 notificationQueue.setNotificationId(notification.getId());
                 notificationQueue.setDeviceId(device.getId());
                 notificationQueue.setStatus(Constant.NOTIFICATION_QUEUE.STATUS.WAIT);
-                notificationQueueRepository.save(notificationQueue);
+                rs = notificationQueueRepository.save(notificationQueue);
             } else {
                 throw new CommonException(Response.NOT_FOUND, MessageCommon.getMessage(Resource.getMessageResoudrce(Constant.RESOURCE.KEY.NOT_FOUND), Constant.TABLE.DEVICE));
             }
@@ -88,6 +89,6 @@ public class NotificationServiceImpl implements NotificationService {
         //Send email neu user co dung email
         if (!StringCommon.isNullOrBlank(user.getEmail()))
             emailRepository.save(new Email(user.getEmail(), title, content));
-        return Response.OK;
+        return rs;
     }
 }
