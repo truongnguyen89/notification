@@ -5,8 +5,8 @@ import com.football.common.constant.Constant;
 import com.football.common.message.MessageCommon;
 import com.football.common.model.device.Device;
 import com.football.common.model.notification.NotificationQueue;
-import com.football.notification.repository.DeviceRepository;
-import com.football.notification.repository.NotificationQueueRepository;
+import com.football.common.repository.DeviceRepository;
+import com.football.common.repository.NotificationQueueRepository;
 import com.football.notification.service.notification.NotificationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +40,7 @@ public class NotificationAccess {
 
     /**
      * Khi user online vao 1 thiet bi, tat lang nghe nhan thong bao cua cac thiet bi khac da login truoc do
+     *
      * @param userId
      * @param onesignalDeviceId
      */
@@ -72,10 +73,8 @@ public class NotificationAccess {
     }
 
     /**
-     *
      * @param deviceId
-     * @param userId
-     * Tao thong bao dung cho khi chua co user online
+     * @param userId   Tao thong bao dung cho khi chua co user online
      */
     public void createNotificationWait(long deviceId, long userId) {
         executorService.execute(new Runnable() {

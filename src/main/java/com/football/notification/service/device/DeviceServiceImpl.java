@@ -2,9 +2,9 @@ package com.football.notification.service.device;
 
 import com.football.common.constant.Constant;
 import com.football.common.model.device.Device;
+import com.football.common.repository.DeviceRepository;
+import com.football.common.repository.NotificationQueueRepository;
 import com.football.notification.component.NotificationAccess;
-import com.football.notification.repository.DeviceRepository;
-import com.football.notification.repository.NotificationQueueRepository;
 import com.football.notification.service.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

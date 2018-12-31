@@ -12,7 +12,7 @@ import com.football.common.response.Response;
 import com.football.common.util.ArrayListCommon;
 import com.football.common.util.Resource;
 import com.football.common.util.StringCommon;
-import com.football.notification.repository.*;
+import com.football.common.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
